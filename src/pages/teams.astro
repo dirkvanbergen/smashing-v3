@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+const teams = (await getCollection('teams')).sort((a, b) => a.data.order - b.data.order);
+
+// Pre-render each team's markdown description.
+const teamsWithBody = await Promise.all(
+  teams.map(async (team) => {
+    const { Content } = await render(team);
+    return { team, Content };
+  })
+);
+---
+
+<BaseLayout title="Teams">
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Our teams</p>
+      <h1>Find your team</h1>
+      <p>From competitive leagues to youth development — there's a spot for everyone.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--3">
+        {
+          teamsWithBody.map(({ team, Content }) => (
+            <article class="card">
+              {team.data.photo && (
+                <img class="card__media" src={team.data.photo} alt="" loading="lazy" />
+              )}
+              <div class="card__body">
+                <h3>{team.data.title}</h3>
+                <p class="card__meta">{team.data.level}</p>
+                <div class="muted"><Content /></div>
+                <p class="muted" style="margin-top: 0.75rem; margin-bottom: 0;">
+                  {team.data.coach && (<><strong>Coach:</strong> {team.data.coach}<br /></>)}
+                  {team.data.practice && (<><strong>Practice:</strong> {team.data.practice}</>)}
+                </p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

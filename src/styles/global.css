@@ -1,0 +1,269 @@
+/* ==========================================================================
+   Smashing '72 — Global styles
+   Color scheme: club red as the primary, dark ink for headings/footer,
+   on white / soft grey.
+   ========================================================================== */
+
+:root {
+  /* Brand colors */
+  --red: #c8102e;
+  --red-dark: #9e0c22;
+  --red-light: #ff6b78;
+
+  /* Neutrals */
+  --heading: #14161a;
+  --bg: #ffffff;
+  --bg-alt: #f5f6f8;
+  --ink: #16181d;
+  --text: #1b1f24;
+  --muted: #5b6470;
+  --border: #e2e6eb;
+
+  /* Layout */
+  --maxw: 1080px;
+  --radius: 10px;
+  --shadow: 0 2px 8px rgba(20, 22, 29, 0.06), 0 8px 24px rgba(20, 22, 29, 0.06);
+
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- Reset-ish ----------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--red-dark);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1, h2, h3 {
+  color: var(--heading);
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+
+p { margin: 0 0 1rem; }
+
+/* --- Layout helpers ------------------------------------------------------ */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+main {
+  min-height: 60vh;
+}
+
+.section {
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.section--alt {
+  background: var(--bg-alt);
+}
+
+.section__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 0.5rem;
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.btn:hover { text-decoration: none; }
+
+.btn--primary {
+  background: var(--red);
+  color: #fff;
+}
+.btn--primary:hover {
+  background: var(--red-dark);
+}
+
+/* Light button — for use on the red hero */
+.btn--light {
+  background: #fff;
+  color: var(--red);
+}
+.btn--light:hover {
+  background: #f3f3f3;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.65);
+}
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* --- Cards & grids ------------------------------------------------------- */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid--3 {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card__media {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+}
+
+.card__body {
+  padding: 1.25rem;
+}
+
+.card__meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+
+.card h3 a {
+  color: var(--heading);
+}
+.card h3 a:hover {
+  color: var(--red);
+  text-decoration: none;
+}
+
+/* --- Hero ---------------------------------------------------------------- */
+.hero {
+  background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+  color: #fff;
+  padding-block: clamp(3rem, 9vw, 6rem);
+}
+.hero h1 {
+  color: #fff;
+}
+.hero .eyebrow {
+  color: rgba(255, 255, 255, 0.9);
+}
+.hero p {
+  font-size: 1.15rem;
+  max-width: 46ch;
+  color: rgba(255, 255, 255, 0.9);
+}
+.hero__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+/* --- Match list ---------------------------------------------------------- */
+.match {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  flex-wrap: wrap;
+}
+.match__date {
+  font-weight: 700;
+  color: var(--red);
+  min-width: 6.5rem;
+}
+.match__teams {
+  flex: 1;
+  min-width: 12rem;
+}
+.match__badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--bg-alt);
+  color: var(--muted);
+}
+.match__badge--home {
+  background: #fdecef;
+  color: var(--red-dark);
+}
+
+/* --- Prose (markdown article body) --------------------------------------- */
+.prose {
+  max-width: 68ch;
+}
+.prose h2 { margin-top: 2rem; }
+.prose img {
+  border-radius: var(--radius);
+  margin-block: 1.5rem;
+}
+.prose ul { padding-left: 1.25rem; }
+
+/* --- Utility ------------------------------------------------------------- */
+.stack > * + * { margin-top: 1rem; }
+.text-center { text-align: center; }
+.muted { color: var(--muted); }
+.back-link { display: inline-block; margin-bottom: 1rem; font-weight: 600; }

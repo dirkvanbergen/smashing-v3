@@ -1,0 +1,71 @@
+# Decap CMS configuration for Smashing '72
+# Docs: https://decapcms.org/docs/
+#
+# Backend: Git Gateway + Netlify Identity — editors log in with an email
+# invite, no GitHub account required. Enable both in the Netlify dashboard
+# (see README).
+
+backend:
+  name: git-gateway
+  branch: main # the branch Decap commits content to
+
+# Uncomment to test the CMS locally with `npx decap-server` (see README).
+# local_backend: true
+
+# Where uploaded media is stored / how it's referenced in markdown.
+# Matches the string image paths used by the Astro content collections.
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  # --- News posts ------------------------------------------------------------
+  - name: "news"
+    label: "News"
+    label_singular: "News post"
+    folder: "src/content/news"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", picker_utc: false }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - { label: "Cover image", name: "cover", widget: "image", required: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # --- Teams -----------------------------------------------------------------
+  - name: "teams"
+    label: "Teams"
+    label_singular: "Team"
+    folder: "src/content/teams"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} ({{level}})"
+    sortable_fields: ["order", "title"]
+    fields:
+      - { label: "Team name", name: "title", widget: "string" }
+      - { label: "Sort order", name: "order", widget: "number", value_type: "int", default: 99 }
+      - { label: "Level / league", name: "level", widget: "string" }
+      - { label: "Coach", name: "coach", widget: "string", required: false }
+      - { label: "Practice times", name: "practice", widget: "string", required: false }
+      - { label: "Team photo", name: "photo", widget: "image", required: false }
+      - { label: "Description", name: "body", widget: "markdown", required: false }
+
+  # --- Match schedule --------------------------------------------------------
+  - name: "matches"
+    label: "Match schedule"
+    label_singular: "Match"
+    folder: "src/content/matches"
+    create: true
+    identifier_field: "home"
+    slug: "{{year}}-{{month}}-{{day}}-{{fields.home}}"
+    summary: "{{home}} vs {{away}} — {{date}}"
+    sortable_fields: ["date"]
+    fields:
+      - { label: "Date & time", name: "date", widget: "datetime", picker_utc: false }
+      - { label: "Home team", name: "home", widget: "string" }
+      - { label: "Away team", name: "away", widget: "string" }
+      - { label: "Location", name: "location", widget: "string", required: false }
+      - { label: "Are we playing at home?", name: "isHome", widget: "boolean", default: true }

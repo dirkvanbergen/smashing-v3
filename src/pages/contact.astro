@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// This form is wired for Netlify Forms:
+//  - data-netlify="true"           → Netlify detects & captures submissions
+//  - hidden "form-name" input      → must match the form's name ("contact")
+//  - data-netlify-honeypot + a      → spam trap ("bot-field") hidden from users
+//    visually-hidden bot-field
+//  - action="/thanks/"             → redirect after a successful submit
+// It is a plain HTML form (no JS framework) so it works without a backend.
+---
+
+<BaseLayout title="Contact">
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Get in touch</p>
+      <h1>Contact us</h1>
+      <p>Questions about joining, training or the club? Send us a message.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-grid">
+      <form
+        class="contact-form"
+        name="contact"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        action="/thanks/"
+        novalidate
+      >
+        <input type="hidden" name="form-name" value="contact" />
+
+        <!-- Honeypot: hidden from humans, catches bots -->
+        <p class="hidden-field">
+          <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+        </p>
+
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" required />
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required />
+        </div>
+
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" required></textarea>
+        </div>
+
+        <p class="form-error" data-form-error hidden></p>
+        <button class="btn btn--primary" type="submit">Send message</button>
+      </form>
+
+      <aside class="contact-info stack">
+        <h2>Other ways to reach us</h2>
+        <p class="muted">
+          <strong>Email</strong><br />
+          <a href="mailto:info@smashing72.example">info@smashing72.example</a>
+        </p>
+        <p class="muted">
+          <strong>Training venue</strong><br />
+          Sports Hall, Example Street 1<br />
+          1234 AB, Your Town
+        </p>
+        <p class="muted">
+          <strong>Want to play?</strong><br />
+          Head to the <a href="/join">join page</a> to book a free trial.
+        </p>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .contact-form {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .field label {
+    font-weight: 600;
+    color: var(--heading);
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font: inherit;
+    color: var(--text);
+    background: #fff;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: 2px solid var(--red);
+    outline-offset: 1px;
+    border-color: var(--red);
+  }
+
+  .hidden-field {
+    position: absolute;
+    left: -9999px;
+  }
+  .form-error {
+    color: var(--red-dark);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  @media (max-width: 760px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector('.contact-form') as HTMLFormElement | null;
+  const errorEl = form?.querySelector('[data-form-error]') as HTMLElement | null;
+
+  form?.addEventListener('submit', (event) => {
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      if (errorEl) {
+        errorEl.textContent = 'Please fill in your name, a valid email, and a message.';
+        errorEl.hidden = false;
+      }
+      form.reportValidity();
+    }
+  });
+</script>

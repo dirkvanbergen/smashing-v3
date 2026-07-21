@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Latest 3 published news posts, newest first.
+const news = (await getCollection('news', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const latestNews = news.slice(0, 3);
+
+// Upcoming matches, soonest first.
+const matches = (await getCollection('matches')).sort(
+  (a, b) => a.data.date.valueOf() - b.data.date.valueOf()
+);
+const upcomingMatches = matches.slice(0, 4);
+
+const dateFmt = new Intl.DateTimeFormat('en-GB', {
+  weekday: 'short',
+  day: 'numeric',
+  month: 'short',
+});
+const postDateFmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout title="Home">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Non-profit volleyball club</p>
+      <h1>Volleyball for everyone at Smashing '72</h1>
+      <p>
+        Friendly, competitive and social volleyball for all ages and levels.
+        Come train with us, join a team, or just cheer from the stands.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--light" href="/join">Join the club</a>
+        <a class="btn btn--ghost" href="/teams">See our teams</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest news -->
+  <section class="section">
+    <div class="container">
+      <div class="section__header">
+        <div>
+          <p class="eyebrow">Latest news</p>
+          <h2>What's happening at the club</h2>
+        </div>
+        <a class="btn btn--primary" href="/news">All news</a>
+      </div>
+
+      <div class="grid grid--3">
+        {
+          latestNews.map((post) => (
+            <article class="card">
+              {post.data.cover && (
+                <img class="card__media" src={post.data.cover} alt="" loading="lazy" />
+              )}
+              <div class="card__body">
+                <p class="card__meta">{postDateFmt.format(post.data.date)}</p>
+                <h3>
+                  <a href={`/news/${post.id}`}>{post.data.title}</a>
+                </h3>
+                <p class="muted">{post.data.excerpt}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming matches -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section__header">
+        <div>
+          <p class="eyebrow">Schedule</p>
+          <h2>Upcoming matches</h2>
+        </div>
+      </div>
+
+      {
+        upcomingMatches.length > 0 ? (
+          <div class="stack">
+            {upcomingMatches.map((m) => (
+              <div class="match">
+                <span class="match__date">{dateFmt.format(m.data.date)}</span>
+                <span class="match__teams">
+                  <strong>{m.data.home}</strong> vs <strong>{m.data.away}</strong>
+                </span>
+                <span class={`match__badge ${m.data.isHome ? 'match__badge--home' : ''}`}>
+                  {m.data.isHome ? 'Home' : 'Away'}
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="muted">No matches scheduled right now — check back soon.</p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

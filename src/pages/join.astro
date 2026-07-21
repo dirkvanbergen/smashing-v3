@@ -1,0 +1,186 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// The "join" form uses Netlify Forms (see /contact for notes). It is a plain
+// static HTML form so Netlify can detect it at build time — no JS framework.
+---
+
+<BaseLayout
+  title="Join"
+  description="Join Smashing '72 — free trial training, membership info, and a sign-up form."
+>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Get on court</p>
+      <h1>Join Smashing '72</h1>
+      <p>New members are always welcome — come along for a free trial session before you decide.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container join-grid">
+      <div class="stack">
+        <div>
+          <h2>How it works</h2>
+          <ol class="steps">
+            <li><strong>Get in touch</strong> using the form — tell us a bit about you.</li>
+            <li><strong>Come to a free trial</strong> training session with the right team.</li>
+            <li><strong>Sign up</strong> as a member if it's a good fit. That's it!</li>
+          </ol>
+        </div>
+
+        <div>
+          <h2>Membership</h2>
+          <p class="muted">
+            We're a non-profit club, so fees just cover hall hire, coaching and league
+            costs. Youth memberships are discounted, and no one is turned away for
+            money reasons — just ask.
+          </p>
+          <ul class="muted">
+            <li>Adults — from &euro;15 / month</li>
+            <li>Youth (U16 &amp; U14) — from &euro;8 / month</li>
+            <li>First trial session always free</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card__body">
+          <h2 style="margin-top: 0;">Register your interest</h2>
+
+          <!-- Netlify Forms: static HTML form.
+               - name + hidden "form-name" must match
+               - data-netlify-honeypot points at the hidden "bot-field" -->
+          <form
+            class="join-form"
+            name="join"
+            method="POST"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            action="/thanks/"
+            novalidate
+          >
+            <input type="hidden" name="form-name" value="join" />
+
+            <!-- Honeypot: hidden from humans, catches bots -->
+            <p class="hidden-field">
+              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+            </p>
+
+            <div class="field">
+              <label for="j-name">Name</label>
+              <input id="j-name" name="name" type="text" required />
+            </div>
+
+            <div class="field">
+              <label for="j-email">Email</label>
+              <input id="j-email" name="email" type="email" required />
+            </div>
+
+            <div class="field">
+              <label for="j-interest">I'm interested in</label>
+              <select id="j-interest" name="interest">
+                <option>Adult team</option>
+                <option>Youth (U16)</option>
+                <option>Youth (U14)</option>
+                <option>Recreational / social</option>
+                <option>Coaching or volunteering</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="j-message">Anything else? (optional)</label>
+              <textarea id="j-message" name="message" rows="4"></textarea>
+            </div>
+
+            <p class="form-error" data-form-error hidden></p>
+            <button class="btn btn--primary" type="submit">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .join-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .steps,
+  .join-grid ul {
+    padding-left: 1.2rem;
+  }
+  .steps li,
+  .join-grid ul li {
+    margin-bottom: 0.5rem;
+  }
+
+  .join-form {
+    display: grid;
+    gap: 1rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .field label {
+    font-weight: 600;
+    color: var(--heading);
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font: inherit;
+    color: var(--text);
+    background: #fff;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: 2px solid var(--red);
+    outline-offset: 1px;
+    border-color: var(--red);
+  }
+
+  .hidden-field {
+    position: absolute;
+    left: -9999px;
+  }
+  .form-error {
+    color: var(--red-dark);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  @media (max-width: 760px) {
+    .join-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+  }
+</style>
+
+<script>
+  // Lightweight client-side validation. `novalidate` on the form lets us show
+  // a friendly message; Netlify still receives a normal POST on success.
+  const form = document.querySelector('.join-form') as HTMLFormElement | null;
+  const errorEl = form?.querySelector('[data-form-error]') as HTMLElement | null;
+
+  form?.addEventListener('submit', (event) => {
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      if (errorEl) {
+        errorEl.textContent = 'Please add your name and a valid email address.';
+        errorEl.hidden = false;
+      }
+      form.reportValidity();
+    }
+  });
+</script>

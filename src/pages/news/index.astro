@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const dateFmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout title="News">
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">News &amp; updates</p>
+      <h1>Club news</h1>
+      <p>Match reports, announcements and everything happening at Smashing '72.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {
+        posts.length > 0 ? (
+          <div class="grid grid--3">
+            {posts.map((post) => (
+              <article class="card">
+                {post.data.cover && (
+                  <img class="card__media" src={post.data.cover} alt="" loading="lazy" />
+                )}
+                <div class="card__body">
+                  <p class="card__meta">{dateFmt.format(post.data.date)}</p>
+                  <h3>
+                    <a href={`/news/${post.id}`}>{post.data.title}</a>
+                  </h3>
+                  <p class="muted">{post.data.excerpt}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="muted">No news posts yet — check back soon.</p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
