@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import home from '../data/home.json';
 
 // Latest 3 published news posts, newest first.
 const news = (await getCollection('news', ({ data }) => !data.draft)).sort(
@@ -29,17 +30,36 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
 <BaseLayout title="Home">
   <!-- Hero -->
   <section class="hero">
-    <div class="container">
-      <p class="eyebrow">Non-profit volleyball club</p>
-      <h1>Volleyball for everyone at Smashing '72</h1>
-      <p>
-        Friendly, competitive and social volleyball for all ages and levels.
-        Come train with us, join a team, or just cheer from the stands.
-      </p>
-      <div class="hero__actions">
-        <a class="btn btn--light" href="/join">Join the club</a>
-        <a class="btn btn--ghost" href="/teams">See our teams</a>
+    <div class:list={['container', 'hero__inner', { 'hero--with-image': home.hero.image }]}>
+      <div class="hero__content">
+        <p class="eyebrow">{home.hero.eyebrow}</p>
+        <h1>{home.hero.title}</h1>
+        <p>{home.hero.text}</p>
+        <div class="hero__actions">
+          {
+            home.hero.primaryLabel && (
+              <a class="btn btn--light" href={home.hero.primaryHref}>
+                {home.hero.primaryLabel}
+              </a>
+            )
+          }
+          {
+            home.hero.secondaryLabel && (
+              <a class="btn btn--ghost" href={home.hero.secondaryHref}>
+                {home.hero.secondaryLabel}
+              </a>
+            )
+          }
+        </div>
       </div>
+
+      {
+        home.hero.image && (
+          <div class="hero__media">
+            <img src={home.hero.image} alt={home.hero.imageAlt ?? ''} width="640" height="480" />
+          </div>
+        )
+      }
     </div>
   </section>
 
@@ -48,8 +68,8 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
     <div class="container">
       <div class="section__header">
         <div>
-          <p class="eyebrow">Latest news</p>
-          <h2>What's happening at the club</h2>
+          <p class="eyebrow">{home.news.eyebrow}</p>
+          <h2>{home.news.heading}</h2>
         </div>
         <a class="btn btn--primary" href="/news">All news</a>
       </div>
@@ -80,8 +100,8 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
     <div class="container">
       <div class="section__header">
         <div>
-          <p class="eyebrow">Schedule</p>
-          <h2>Upcoming matches</h2>
+          <p class="eyebrow">{home.matches.eyebrow}</p>
+          <h2>{home.matches.heading}</h2>
         </div>
       </div>
 

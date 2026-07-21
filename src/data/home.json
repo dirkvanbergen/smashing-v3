@@ -1,0 +1,21 @@
+{
+  "hero": {
+    "eyebrow": "Non-profit volleyball club",
+    "title": "Volleyball for everyone at Smashing '72",
+    "text": "Friendly, competitive and social volleyball for all ages and levels. Come train with us, join a team, or just cheer from the stands.",
+    "image": "/uploads/hero-placeholder.svg",
+    "imageAlt": "Smashing '72 volleyball club",
+    "primaryLabel": "Join the club",
+    "primaryHref": "/join",
+    "secondaryLabel": "See our teams",
+    "secondaryHref": "/teams"
+  },
+  "news": {
+    "eyebrow": "Latest news",
+    "heading": "What's happening at the club"
+  },
+  "matches": {
+    "eyebrow": "Schedule",
+    "heading": "Upcoming matches"
+  }
+}

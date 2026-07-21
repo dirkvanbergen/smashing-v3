@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="640" height="480" role="img" aria-label="Smashing '72 volleyball">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c8102e"/>
+      <stop offset="1" stop-color="#9e0c22"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" rx="18" fill="url(#g)"/>
+  <g transform="translate(320 240)">
+    <circle r="120" fill="#fff"/>
+    <g fill="none" stroke="#c8102e" stroke-width="7" stroke-linecap="round">
+      <path d="M-118 -20a170 170 0 0 1 150 -95"/>
+      <path d="M32 -115a170 170 0 0 1 82 130"/>
+      <path d="M114 15a170 170 0 0 1 -150 100"/>
+      <path d="M-36 115a170 170 0 0 1 -82 -135"/>
+      <path d="M-120 0q60 20 120 0t120 0"/>
+      <path d="M-70 -95q40 60 40 190"/>
+      <path d="M70 -95q-40 60 -40 190"/>
+    </g>
+  </g>
+</svg>

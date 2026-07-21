@@ -18,6 +18,43 @@ media_folder: "public/uploads"
 public_folder: "/uploads"
 
 collections:
+  # --- Site settings (singletons) --------------------------------------------
+  - name: "settings"
+    label: "Site settings"
+    editor:
+      preview: false
+    files:
+      - name: "home"
+        label: "Home page"
+        file: "src/data/home.json"
+        description: "Hero photo, headings and intro text on the front page."
+        fields:
+          - label: "Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow (small text above the title)", name: "eyebrow", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro text", name: "text", widget: "text" }
+              - { label: "Photo (shown on the right)", name: "image", widget: "image", required: false }
+              - { label: "Photo alt text", name: "imageAlt", widget: "string", required: false }
+              - { label: "Primary button label", name: "primaryLabel", widget: "string", required: false }
+              - { label: "Primary button link", name: "primaryHref", widget: "string", required: false, default: "/join" }
+              - { label: "Secondary button label", name: "secondaryLabel", widget: "string", required: false }
+              - { label: "Secondary button link", name: "secondaryHref", widget: "string", required: false, default: "/teams" }
+          - label: "News section"
+            name: "news"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Heading", name: "heading", widget: "string" }
+          - label: "Matches section"
+            name: "matches"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Heading", name: "heading", widget: "string" }
+
   # --- News posts ------------------------------------------------------------
   - name: "news"
     label: "News"
