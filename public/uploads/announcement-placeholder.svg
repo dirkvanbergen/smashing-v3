@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" width="480" height="640" role="img" aria-label="Event poster placeholder">
+  <rect width="480" height="640" fill="#14161a"/>
+  <rect x="16" y="16" width="448" height="608" fill="none" stroke="#c8102e" stroke-width="6" rx="10"/>
+  <text x="240" y="120" text-anchor="middle" fill="#c8102e" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="800">SMASHING '72</text>
+  <text x="240" y="300" text-anchor="middle" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif" font-size="52" font-weight="800">EVENT</text>
+  <text x="240" y="360" text-anchor="middle" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif" font-size="52" font-weight="800">POSTER</text>
+  <text x="240" y="470" text-anchor="middle" fill="#9aa2ad" font-family="Segoe UI, Arial, sans-serif" font-size="22">Upload your poster in the CMS</text>
+  <circle cx="240" cy="560" r="42" fill="#fff"/>
+  <path d="M205 560a35 35 0 0 1 70 0" fill="none" stroke="#c8102e" stroke-width="4"/>
+</svg>

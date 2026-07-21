@@ -44,4 +44,17 @@ const matches = defineCollection({
   }),
 });
 
-export const collections = { news, teams, matches };
+// Temporary home-page announcements (e.g. an upcoming party). The `date` is
+// the event date: announcements are hidden once it has passed. The markdown
+// body is the description. `image` is a poster shown with a click-to-enlarge
+// lightbox.
+const announcements = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/announcements' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    image: z.string().optional(), // "/uploads/…"
+  }),
+});
+
+export const collections = { news, teams, matches, announcements };

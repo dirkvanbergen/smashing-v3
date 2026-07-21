@@ -55,6 +55,24 @@ collections:
               - { label: "Eyebrow", name: "eyebrow", widget: "string" }
               - { label: "Heading", name: "heading", widget: "string" }
 
+  # --- Announcements ---------------------------------------------------------
+  # Temporary home-page notices (e.g. a party). Hidden automatically once the
+  # date has passed. When more than one is active they alternate colours and
+  # image sides on the page.
+  - name: "announcements"
+    label: "Announcements"
+    label_singular: "Announcement"
+    folder: "src/content/announcements"
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date (hidden after this day)", name: "date", widget: "datetime", picker_utc: false }
+      - { label: "Poster / image", name: "image", widget: "image", required: false, hint: "Click-to-enlarge poster. Portrait posters work well." }
+      - { label: "Description", name: "body", widget: "markdown" }
+
   # --- News posts ------------------------------------------------------------
   - name: "news"
     label: "News"

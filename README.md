@@ -58,14 +58,26 @@ Astro pages read.
 1. Go to `https://<your-site>.netlify.app/admin/`.
 2. Log in with the email invite the club admin sent you (set a password on first
    use).
-3. Pick a collection — **News**, **Teams**, or **Match schedule** — and click
-   **New** to add an entry, or an existing one to edit it.
+3. Pick what you want to edit and click **New** (or an existing entry):
+   - **Site settings → Home page** — the hero photo, headings and intro text.
+   - **Announcements** — temporary home-page notices (e.g. a party).
+   - **News**, **Teams**, **Match schedule** — the main content.
 4. Fill in the fields, upload images where offered, and click **Publish**.
 5. Your change is committed to the site's Git repo and the site rebuilds
    automatically — it's live in a minute or two.
 
-News posts have a **Draft** toggle: leave it on to keep a post hidden until it's
-ready.
+**News posts** have a **Draft** toggle: leave it on to keep a post hidden until
+it's ready.
+
+**Announcements** show directly under the hero on the home page and disappear
+automatically once their **date** has passed. When more than one is active they
+alternate colours and swap which side the poster is on; click a poster to view
+it full-size. Because this is a static site, an expired announcement is removed
+in the browser immediately, and fully drops out of the HTML on the next rebuild
+(any CMS publish triggers one). If you want them to clear without anyone
+publishing, add a daily
+[scheduled build](https://docs.netlify.com/configure-builds/build-hooks/) in
+Netlify.
 
 ### Optional: editing content locally
 

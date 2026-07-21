@@ -1,7 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import home from '../data/home.json';
+
+// Active announcements: hide any whose event date has already passed.
+// (Build-time filter; a small client-side script below also removes any that
+// pass between site rebuilds, so alternating colors/sides stay correct.)
+const todayStart = new Date();
+todayStart.setHours(0, 0, 0, 0);
+
+const announcements = (await getCollection('announcements'))
+  .filter((a) => a.data.date.valueOf() >= todayStart.valueOf())
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+
+const activeAnnouncements = await Promise.all(
+  announcements.map(async (item) => {
+    const { Content } = await render(item);
+    return { item, Content };
+  })
+);
+
+const announceDateFmt = new Intl.DateTimeFormat('en-GB', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
 
 // Latest 3 published news posts, newest first.
 const news = (await getCollection('news', ({ data }) => !data.draft)).sort(
@@ -62,6 +86,45 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
       }
     </div>
   </section>
+
+  <!-- Announcements (temporary; auto-hide after their date) -->
+  {
+    activeAnnouncements.length > 0 && (
+      <section class="announce-section">
+        <div class="container announce-list">
+          {activeAnnouncements.map(({ item, Content }) => (
+            <article class="announce" data-date={item.data.date.toISOString()}>
+              {item.data.image && (
+                <button
+                  type="button"
+                  class="announce__media poster-trigger"
+                  data-full={item.data.image}
+                  data-alt={item.data.title}
+                  aria-label={`Enlarge poster: ${item.data.title}`}
+                >
+                  <img src={item.data.image} alt={item.data.title} loading="lazy" />
+                  <span class="announce__zoom" aria-hidden="true">⤢ Click to enlarge</span>
+                </button>
+              )}
+              <div class="announce__body">
+                <p class="announce__date">{announceDateFmt.format(item.data.date)}</p>
+                <h3>{item.data.title}</h3>
+                <div class="announce__desc">
+                  <Content />
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Shared lightbox for full-size posters */}
+        <dialog class="lightbox" id="poster-lightbox">
+          <button type="button" class="lightbox__close" aria-label="Close">&times;</button>
+          <img class="lightbox__img" src="" alt="" />
+        </dialog>
+      </section>
+    )
+  }
 
   <!-- Latest news -->
   <section class="section">
@@ -127,3 +190,40 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // 1) Remove any announcements whose date has passed since the last build.
+  //    Removing the node (rather than hiding) lets CSS :nth-child re-stripe the
+  //    remaining cards, keeping alternating colors/sides correct.
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  document.querySelectorAll<HTMLElement>('.announce').forEach((el) => {
+    const raw = el.dataset.date;
+    if (raw && new Date(raw) < today) el.remove();
+  });
+  const section = document.querySelector('.announce-section');
+  if (section && !section.querySelector('.announce')) section.remove();
+
+  // 2) Poster lightbox.
+  const lightbox = document.getElementById('poster-lightbox') as HTMLDialogElement | null;
+  const lightboxImg = lightbox?.querySelector('.lightbox__img') as HTMLImageElement | null;
+
+  document.querySelectorAll<HTMLButtonElement>('.poster-trigger').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!lightbox || !lightboxImg) return;
+      lightboxImg.src = btn.dataset.full ?? '';
+      lightboxImg.alt = btn.dataset.alt ?? '';
+      lightbox.showModal();
+    });
+  });
+
+  lightbox?.querySelector('.lightbox__close')?.addEventListener('click', () => lightbox.close());
+  // Click on the backdrop (outside the image) closes the lightbox.
+  lightbox?.addEventListener('click', (event) => {
+    if (event.target === lightbox) lightbox.close();
+  });
+  // Clear the src on close so large images don't linger in memory.
+  lightbox?.addEventListener('close', () => {
+    if (lightboxImg) lightboxImg.src = '';
+  });
+</script>
