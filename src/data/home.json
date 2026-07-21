@@ -1,13 +1,13 @@
 {
   "hero": {
-    "eyebrow": "Non-profit volleyball club",
-    "title": "Volleyball for everyone at Smashing '72",
+    "secondaryLabel": "See our teams",
+    "eyebrow": "De gezelligste volleybalclub van Diemen!",
+    "primaryHref": "/join",
     "text": "Friendly, competitive and social volleyball for all ages and levels. Come train with us, join a team, or just cheer from the stands.",
-    "image": "/uploads/hero-placeholder.svg",
     "imageAlt": "Smashing '72 volleyball club",
     "primaryLabel": "Join the club",
-    "primaryHref": "/join",
-    "secondaryLabel": "See our teams",
+    "title": "Smashing '72",
+    "image": "/uploads/hero-placeholder.svg",
     "secondaryHref": "/teams"
   },
   "news": {
