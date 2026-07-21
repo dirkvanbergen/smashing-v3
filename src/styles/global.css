@@ -284,53 +284,56 @@ main {
   color: var(--red-dark);
 }
 
-/* --- Announcements -------------------------------------------------------- */
-.announce-section {
-  padding-block: clamp(2rem, 5vw, 3.5rem);
-}
+/* --- Announcements (slim full-width banners) ----------------------------- */
 .announce-list {
-  display: grid;
-  gap: 1.25rem;
+  display: grid; /* banners stack flush, full-bleed */
 }
 
 .announce {
-  display: flex;
-  align-items: center;
-  gap: clamp(1.25rem, 4vw, 2.5rem);
-  padding: clamp(1.25rem, 3vw, 2rem);
-  border-radius: 14px;
-  border: 1px solid var(--border);
+  border: 0;
 }
-/* Alternating colors + image side (nth-child re-stripes if one expires). */
+/* Alternating colors (nth-child re-stripes if one expires). */
 .announce:nth-child(odd) {
   background: #fdecef; /* soft club red */
 }
 .announce:nth-child(even) {
   background: #eef1f5; /* soft neutral */
+}
+
+/* .container centers the content; the banner background stays full width. */
+.announce__inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  padding-block: 0.85rem;
+}
+/* Alternate which side the poster sits on. */
+.announce:nth-child(even) .announce__inner {
   flex-direction: row-reverse;
 }
 
 .announce__media {
-  flex: 0 0 clamp(180px, 34%, 320px);
+  flex: 0 0 auto;
+  height: clamp(56px, 8vw, 84px);
   position: relative;
   display: block;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: zoom-in;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   line-height: 0;
 }
 .announce__media img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
+  height: 100%;
+  width: auto;
+  border-radius: 8px;
   transition: transform 0.2s ease;
 }
 .announce__media:hover img,
 .announce__media:focus-visible img {
-  transform: scale(1.02);
+  transform: scale(1.04);
 }
 .announce__media:focus-visible {
   outline: 3px solid var(--red);
@@ -338,15 +341,14 @@ main {
 }
 .announce__zoom {
   position: absolute;
-  left: 0.6rem;
-  bottom: 0.6rem;
-  font-size: 0.75rem;
-  font-weight: 700;
+  top: 4px;
+  right: 4px;
+  font-size: 0.7rem;
   line-height: 1;
   color: #fff;
   background: rgba(20, 22, 29, 0.72);
-  padding: 0.35rem 0.55rem;
-  border-radius: 999px;
+  padding: 0.25rem 0.3rem;
+  border-radius: 6px;
 }
 
 .announce__body {
@@ -354,29 +356,31 @@ main {
   min-width: 0;
 }
 .announce__body h3 {
-  margin: 0.15rem 0 0.5rem;
-  font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+  margin: 0 0 0.1rem;
+  font-size: 1.15rem;
 }
 .announce__date {
   font-weight: 700;
   color: var(--red-dark);
-  margin: 0 0 0.15rem;
-  font-size: 0.9rem;
+  margin: 0 0 0.05rem;
+  font-size: 0.8rem;
+}
+.announce__desc {
+  font-size: 0.92rem;
+}
+.announce__desc p {
+  margin: 0 0 0.4rem;
 }
 .announce__desc :last-child {
   margin-bottom: 0;
 }
 
-@media (max-width: 760px) {
-  .announce,
-  .announce:nth-child(even) {
-    flex-direction: column;
-    align-items: stretch;
-  }
+@media (max-width: 560px) {
   .announce__media {
-    flex-basis: auto;
-    width: 100%;
-    max-width: 380px;
+    height: 52px;
+  }
+  .announce__body h3 {
+    font-size: 1.05rem;
   }
 }
 
