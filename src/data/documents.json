@@ -2,16 +2,20 @@
   "heading": "Club documents",
   "items": [
     {
+      "label": "Inschrijfformulier",
+      "url": "/uploads/inschrijfformulier_seizoen_2025-2026.pdf"
+    },
+    {
+      "label": "Sign up form (English)",
+      "url": "/uploads/membership_administration_form_season_2025-2026_en.pdf"
+    },
+    {
       "label": "Huishoudelijk Reglement",
       "url": "/uploads/huishoudelijk-reglement.pdf"
     },
     {
       "label": "Statuten",
       "url": "/uploads/statuten.pdf"
-    },
-    {
-      "label": "Sign up form (English)",
-      "url": "./public/uploads/membership_administration_form_season_2025-2026_en.pdf"
     }
   ]
 }
