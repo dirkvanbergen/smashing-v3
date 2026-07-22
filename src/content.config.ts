@@ -33,16 +33,8 @@ const teams = defineCollection({
   }),
 });
 
-const matches = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/matches' }),
-  schema: z.object({
-    date: z.coerce.date(),
-    home: z.string(),
-    away: z.string(),
-    location: z.string().optional(),
-    isHome: z.boolean().default(true),
-  }),
-});
+// NOTE: match fixtures are NOT a content collection — they come from the
+// Nevobo RSS feed at build time (see src/lib/matches.ts).
 
 // Temporary home-page announcements (e.g. an upcoming party). The `date` is
 // the event date: announcements are hidden once it has passed. The markdown
@@ -57,4 +49,15 @@ const announcements = defineCollection({
   }),
 });
 
-export const collections = { news, teams, matches, announcements };
+// Sponsors shown in the home-page news sidebar (logo + link).
+const sponsors = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/sponsors' }),
+  schema: z.object({
+    name: z.string(),
+    url: z.string().optional(),
+    logo: z.string().optional(), // "/uploads/…"
+    order: z.number().default(99),
+  }),
+});
+
+export const collections = { news, teams, announcements, sponsors };

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import home from '../data/home.json';
+import { getNextHomeMatchDay } from '../lib/matches.ts';
 
 // Active announcements: hide any whose event date has already passed.
 // (Build-time filter; a small client-side script below also removes any that
@@ -27,22 +28,29 @@ const announceDateFmt = new Intl.DateTimeFormat('en-GB', {
   year: 'numeric',
 });
 
-// Latest 3 published news posts, newest first.
+// Latest published news posts, newest first: one featured + a few smaller.
 const news = (await getCollection('news', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
-const latestNews = news.slice(0, 3);
+const featuredNews = news[0];
+const moreNews = news.slice(1, 5);
 
-// Upcoming matches, soonest first.
-const matches = (await getCollection('matches')).sort(
-  (a, b) => a.data.date.valueOf() - b.data.date.valueOf()
+// Sidebar: sponsors (CMS collection) shown alongside the news.
+const sponsors = (await getCollection('sponsors')).sort(
+  (a, b) => a.data.order - b.data.order
 );
-const upcomingMatches = matches.slice(0, 4);
 
-const dateFmt = new Intl.DateTimeFormat('en-GB', {
-  weekday: 'short',
+// Next home-match day (from the Nevobo RSS feed at build time), grouped by
+// time slot. We show one date heading and all home matches that day.
+const matchDay = await getNextHomeMatchDay();
+const anyProvisional =
+  matchDay?.slots.some((s) => s.matches.some((m) => m.provisional)) ?? false;
+
+const matchDayFmt = new Intl.DateTimeFormat('en-GB', {
+  weekday: 'long',
   day: 'numeric',
-  month: 'short',
+  month: 'long',
+  timeZone: 'Europe/Amsterdam',
 });
 const postDateFmt = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
@@ -136,26 +144,114 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
           <p class="eyebrow">{home.news.eyebrow}</p>
           <h2>{home.news.heading}</h2>
         </div>
-        <a class="btn btn--primary" href="/news">All news</a>
       </div>
 
-      <div class="grid grid--3">
-        {
-          latestNews.map((post) => (
-            <article class="card">
-              {post.data.cover && (
-                <img class="card__media" src={post.data.cover} alt="" loading="lazy" />
-              )}
-              <div class="card__body">
-                <p class="card__meta">{postDateFmt.format(post.data.date)}</p>
-                <h3>
-                  <a href={`/news/${post.id}`}>{post.data.title}</a>
-                </h3>
-                <p class="muted">{post.data.excerpt}</p>
+      <div class="news-layout">
+        <div class="news-main">
+          {
+            featuredNews && (
+              <article class="card card--featured">
+                {featuredNews.data.cover && (
+                  <img
+                    class="card__media card__media--lg"
+                    src={featuredNews.data.cover}
+                    alt=""
+                    loading="lazy"
+                  />
+                )}
+                <div class="card__body">
+                  <p class="card__meta">
+                    <span class="tag-latest">Latest</span>
+                    {postDateFmt.format(featuredNews.data.date)}
+                  </p>
+                  <h3 class="card__title-lg">
+                    <a href={`/news/${featuredNews.id}`}>{featuredNews.data.title}</a>
+                  </h3>
+                  <p class="muted">{featuredNews.data.excerpt}</p>
+                  <a class="read-more" href={`/news/${featuredNews.id}`}>Read more &rarr;</a>
+                </div>
+              </article>
+            )
+          }
+
+          {
+            moreNews.length > 0 && (
+              <div class="grid grid--2 news-more">
+                {moreNews.map((post) => (
+                  <article class="card">
+                    {post.data.cover && (
+                      <img class="card__media" src={post.data.cover} alt="" loading="lazy" />
+                    )}
+                    <div class="card__body">
+                      <p class="card__meta">{postDateFmt.format(post.data.date)}</p>
+                      <h3>
+                        <a href={`/news/${post.id}`}>{post.data.title}</a>
+                      </h3>
+                      <p class="muted">{post.data.excerpt}</p>
+                    </div>
+                  </article>
+                ))}
               </div>
-            </article>
-          ))
-        }
+            )
+          }
+
+          <a class="news-all" href="/news">All news &rarr;</a>
+        </div>
+
+        <aside class="sidebar">
+          {
+            home.shop && home.shop.links?.length > 0 && (
+              <div class="side-card">
+                <h3 class="side-card__title">{home.shop.heading}</h3>
+                {home.shop.intro && <p class="side-card__intro">{home.shop.intro}</p>}
+                <div class="side-links">
+                  {home.shop.links.map((link) => (
+                    <a
+                      class="btn btn--primary side-link"
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )
+          }
+
+          {
+            sponsors.length > 0 && (
+              <div class="side-card">
+                <h3 class="side-card__title">{home.sponsors?.heading ?? 'Our sponsors'}</h3>
+                <div class="sponsor-grid">
+                  {sponsors.map((s) => {
+                    const inner = s.data.logo ? (
+                      <img src={s.data.logo} alt={s.data.name} loading="lazy" />
+                    ) : (
+                      <span>{s.data.name}</span>
+                    );
+                    return s.data.url ? (
+                      <a
+                        class="sponsor"
+                        href={s.data.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={s.data.name}
+                      >
+                        {inner}
+                      </a>
+                    ) : (
+                      <div class="sponsor" title={s.data.name}>
+                        {inner}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )
+          }
+        </aside>
       </div>
     </div>
   </section>
@@ -171,22 +267,32 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
       </div>
 
       {
-        upcomingMatches.length > 0 ? (
-          <div class="stack">
-            {upcomingMatches.map((m) => (
-              <div class="match">
-                <span class="match__date">{dateFmt.format(m.data.date)}</span>
-                <span class="match__teams">
-                  <strong>{m.data.home}</strong> vs <strong>{m.data.away}</strong>
-                </span>
-                <span class={`match__badge ${m.data.isHome ? 'match__badge--home' : ''}`}>
-                  {m.data.isHome ? 'Home' : 'Away'}
-                </span>
+        matchDay ? (
+          <div class="matchday">
+            <p class="matchday__date">{matchDayFmt.format(matchDay.date)}</p>
+            {anyProvisional && (
+              <p class="matchday__note">Provisional — times may still change.</p>
+            )}
+
+            {matchDay.slots.map((slot) => (
+              <div class="slot">
+                <div class="slot__time">{slot.time}</div>
+                <div class="slot__list">
+                  {slot.matches.map((m) => (
+                    <div class="slot__match">
+                      <strong>{m.homeTeam}</strong> vs {m.awayTeam}
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
+
+            <p class="muted match__source">
+              Fixtures via the <a href="https://www.nevobo.nl/">Nevobo</a> competition feed.
+            </p>
           </div>
         ) : (
-          <p class="muted">No matches scheduled right now — check back soon.</p>
+          <p class="muted">No home matches scheduled right now — check back soon.</p>
         )
       }
     </div>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80" role="img" aria-label="Sponsor logo placeholder">
+  <rect width="200" height="80" rx="8" fill="#14161a"/>
+  <rect x="24" y="28" width="24" height="24" rx="4" fill="#c8102e"/>
+  <text x="60" y="46" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif" font-size="18" font-weight="700">Sponsor</text>
+</svg>

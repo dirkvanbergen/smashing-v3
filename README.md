@@ -61,7 +61,10 @@ Astro pages read.
 3. Pick what you want to edit and click **New** (or an existing entry):
    - **Site settings → Home page** — the hero photo, headings and intro text.
    - **Announcements** — temporary home-page notices (e.g. a party).
-   - **News**, **Teams**, **Match schedule** — the main content.
+   - **News**, **Teams** — the main content.
+
+   > The **match schedule is not in the CMS** — fixtures come automatically from
+   > the Nevobo feed (see below).
 4. Fill in the fields, upload images where offered, and click **Publish**.
 5. Your change is committed to the site's Git repo and the site rebuilds
    automatically — it's live in a minute or two.
@@ -114,6 +117,35 @@ After the first deploy, enable these in the Netlify UI:
    that includes them. If not, trigger a redeploy. Then set up
    **Forms → Form notifications** to email submissions to the club inbox.
    (Netlify auto-detects the static forms; no extra config needed.)
+
+### Match schedule (Nevobo feed)
+
+Home-page fixtures are **not** edited by anyone — they're pulled from the club's
+official Nevobo RSS feed
+(`https://api.nevobo.nl/export/vereniging/CKL7J75/programma.rss`) by
+[`src/lib/matches.ts`](src/lib/matches.ts) at **build time**, filtered to the
+next few upcoming **home** matches.
+
+Because the feed can't be read directly from the browser (no CORS header), it's
+fetched during the build and baked into the static page. Provisional
+("concept") fixtures are shown with a *Provisional* tag, since Nevobo marks the
+whole pre-season programme that way until it's finalized. If the feed is
+unreachable at build time, the section simply shows "no home matches" and the
+build still succeeds.
+
+**Keeping it fresh — scheduled rebuild (one-time setup):**
+Since the schedule is baked in at build time, rebuild the site periodically so
+it stays current. A ready-made GitHub Actions workflow does this daily:
+[`.github/workflows/refresh-schedule.yml`](.github/workflows/refresh-schedule.yml).
+To enable it:
+
+1. In Netlify: **Site configuration → Build & deploy → Build hooks → Add build
+   hook**. Copy the generated URL.
+2. In GitHub: **Settings → Secrets and variables → Actions → New repository
+   secret**, name it `NETLIFY_BUILD_HOOK`, and paste the URL.
+
+The workflow then triggers a rebuild every morning (and you can run it manually
+from the Actions tab). Adjust the `cron:` line to change the frequency.
 
 ### Notes / to-do
 

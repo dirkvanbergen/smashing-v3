@@ -17,5 +17,15 @@
   "matches": {
     "eyebrow": "Schedule",
     "heading": "Upcoming matches"
+  },
+  "shop": {
+    "heading": "Club shop",
+    "intro": "Order your Smashing '72 jerseys and club kit online.",
+    "links": [
+      { "label": "Jerseys & kit", "url": "https://shop.smashing72.example" }
+    ]
+  },
+  "sponsors": {
+    "heading": "Our sponsors"
   }
 }

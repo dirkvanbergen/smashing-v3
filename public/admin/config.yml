@@ -54,6 +54,42 @@ collections:
             fields:
               - { label: "Eyebrow", name: "eyebrow", widget: "string" }
               - { label: "Heading", name: "heading", widget: "string" }
+          - label: "Shop (news sidebar)"
+            name: "shop"
+            widget: "object"
+            fields:
+              - { label: "Heading", name: "heading", widget: "string" }
+              - { label: "Intro", name: "intro", widget: "text", required: false }
+              - label: "Links"
+                name: "links"
+                widget: "list"
+                label_singular: "Link"
+                summary: "{{fields.label}}"
+                fields:
+                  - { label: "Label", name: "label", widget: "string" }
+                  - { label: "URL", name: "url", widget: "string" }
+          - label: "Sponsors section (news sidebar)"
+            name: "sponsors"
+            widget: "object"
+            fields:
+              - { label: "Heading", name: "heading", widget: "string" }
+
+  # --- Sponsors --------------------------------------------------------------
+  # Shown in the home-page news sidebar. Add each sponsor with a logo + link.
+  - name: "sponsors"
+    label: "Sponsors"
+    label_singular: "Sponsor"
+    folder: "src/content/sponsors"
+    create: true
+    identifier_field: "name"
+    slug: "{{slug}}"
+    summary: "{{name}}"
+    sortable_fields: ["order", "name"]
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Logo", name: "logo", widget: "image", required: false }
+      - { label: "Website URL", name: "url", widget: "string", required: false }
+      - { label: "Sort order", name: "order", widget: "number", value_type: "int", default: 99 }
 
   # --- Announcements ---------------------------------------------------------
   # Temporary home-page notices (e.g. a party). Hidden automatically once the
@@ -108,19 +144,6 @@ collections:
       - { label: "Team photo", name: "photo", widget: "image", required: false }
       - { label: "Description", name: "body", widget: "markdown", required: false }
 
-  # --- Match schedule --------------------------------------------------------
-  - name: "matches"
-    label: "Match schedule"
-    label_singular: "Match"
-    folder: "src/content/matches"
-    create: true
-    identifier_field: "home"
-    slug: "{{year}}-{{month}}-{{day}}-{{fields.home}}"
-    summary: "{{home}} vs {{away}} — {{date}}"
-    sortable_fields: ["date"]
-    fields:
-      - { label: "Date & time", name: "date", widget: "datetime", picker_utc: false }
-      - { label: "Home team", name: "home", widget: "string" }
-      - { label: "Away team", name: "away", widget: "string" }
-      - { label: "Location", name: "location", widget: "string", required: false }
-      - { label: "Are we playing at home?", name: "isHome", widget: "boolean", default: true }
+  # NOTE: The match schedule is NOT edited here — fixtures come from the Nevobo
+  # RSS feed automatically (see src/lib/matches.ts). There is no "matches"
+  # collection on purpose.

@@ -157,6 +157,88 @@ main {
 .grid--3 {
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 }
+.grid--2 {
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
+/* --- News + sidebar layout ----------------------------------------------- */
+.news-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  align-items: start;
+}
+.news-main {
+  min-width: 0;
+}
+.sidebar {
+  display: grid;
+  gap: 1.25rem;
+}
+.side-card {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.side-card__title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--heading);
+  margin: 0 0 0.75rem;
+}
+.side-card__intro {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0 0 0.9rem;
+}
+.side-links {
+  display: grid;
+  gap: 0.5rem;
+}
+.side-link {
+  text-align: center;
+}
+.sponsor-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+.sponsor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-height: 72px;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+a.sponsor:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+.sponsor img {
+  max-height: 56px;
+  max-width: 100%;
+  width: auto;
+  object-fit: contain;
+}
+.sponsor span {
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .news-layout {
+    grid-template-columns: 1fr;
+  }
+}
 
 .card {
   background: var(--bg);
@@ -192,9 +274,71 @@ main {
   text-decoration: none;
 }
 
+/* Featured (latest) news card */
+.card--featured {
+  margin-bottom: 1.5rem;
+  border-top: 4px solid var(--red);
+}
+.card--featured .card__body {
+  padding: 1.5rem;
+}
+.card__media--lg {
+  aspect-ratio: 21 / 9;
+}
+.card__title-lg {
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  margin: 0.35rem 0 0.5rem;
+}
+.card__title-lg a {
+  color: var(--heading);
+}
+.card__title-lg a:hover {
+  color: var(--red);
+  text-decoration: none;
+}
+.tag-latest {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.68rem;
+  padding: 0.14rem 0.45rem;
+  border-radius: 999px;
+  margin-right: 0.4rem;
+  vertical-align: 0.08em;
+}
+.read-more {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-weight: 700;
+  color: var(--red-dark);
+}
+
+.news-all {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-weight: 700;
+  color: var(--red-dark);
+}
+
+/* Smaller "more news" cards */
+.news-more .card__body {
+  padding: 1rem;
+}
+.news-more h3 {
+  font-size: 1.02rem;
+  margin-bottom: 0.35rem;
+}
+.news-more .card__meta {
+  font-size: 0.8rem;
+}
+
 /* --- Hero ---------------------------------------------------------------- */
 .hero {
-  background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+  /* Deeper, less-saturated red so the hero reads calmer than the banners. */
+  background: linear-gradient(135deg, var(--red-dark) 0%, #6f0a1a 100%);
   color: #fff;
   padding-block: clamp(3rem, 9vw, 6rem);
 }
@@ -249,55 +393,64 @@ main {
   }
 }
 
-/* --- Match list ---------------------------------------------------------- */
-.match {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.9rem 1.1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg);
-  flex-wrap: wrap;
+/* --- Match day (Nevobo home fixtures, grouped by time slot) -------------- */
+.matchday__date {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--heading);
+  margin: 0 0 0.4rem;
 }
-.match__date {
-  font-weight: 700;
-  color: var(--red);
-  min-width: 6.5rem;
-}
-.match__teams {
-  flex: 1;
-  min-width: 12rem;
-}
-.match__badge {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.matchday__note {
+  display: inline-block;
+  color: #8a6d00;
+  background: #fff6e6;
+  font-size: 0.78rem;
+  font-weight: 600;
   padding: 0.2rem 0.6rem;
   border-radius: 999px;
-  background: var(--bg-alt);
-  color: var(--muted);
+  margin: 0 0 1.25rem;
 }
-.match__badge--home {
-  background: #fdecef;
-  color: var(--red-dark);
+.slot {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--border);
+}
+.slot:last-of-type {
+  border-bottom: 1px solid var(--border);
+}
+.slot__time {
+  font-weight: 700;
+  color: var(--red);
+  font-size: 1.05rem;
+}
+.slot__list {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+}
+.slot__match {
+  line-height: 1.4;
+}
+.slot__match strong {
+  color: var(--heading);
+}
+.match__source {
+  margin-top: 1.25rem;
+  font-size: 0.82rem;
 }
 
 /* --- Announcements (slim full-width banners) ----------------------------- */
 .announce-list {
-  display: grid; /* banners stack flush, full-bleed */
+  display: grid; /* full-bleed banners */
+  gap: 0.6rem; /* a little breathing room between banners */
 }
 
 .announce {
   border: 0;
-}
-/* Alternating colors (nth-child re-stripes if one expires). */
-.announce:nth-child(odd) {
-  background: #fdecef; /* soft club red */
-}
-.announce:nth-child(even) {
-  background: #eef1f5; /* soft neutral */
+  color: #fff;
+  background: var(--red);
 }
 
 /* .container centers the content; the banner background stays full width. */
@@ -329,6 +482,7 @@ main {
   height: 100%;
   width: auto;
   border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   transition: transform 0.2s ease;
 }
 .announce__media:hover img,
@@ -336,7 +490,7 @@ main {
   transform: scale(1.04);
 }
 .announce__media:focus-visible {
-  outline: 3px solid var(--red);
+  outline: 3px solid #fff;
   outline-offset: 2px;
 }
 .announce__zoom {
@@ -356,17 +510,25 @@ main {
   min-width: 0;
 }
 .announce__body h3 {
-  margin: 0 0 0.1rem;
-  font-size: 1.15rem;
+  margin: 0 0 0.15rem;
+  font-size: 1.2rem;
+  color: #fff;
 }
 .announce__date {
   font-weight: 700;
-  color: var(--red-dark);
-  margin: 0 0 0.05rem;
-  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.1rem;
+  font-size: 0.78rem;
 }
 .announce__desc {
   font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.92);
+}
+.announce__desc a {
+  color: #fff;
+  text-decoration: underline;
 }
 .announce__desc p {
   margin: 0 0 0.4rem;

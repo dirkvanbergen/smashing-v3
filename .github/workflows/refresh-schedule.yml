@@ -1,0 +1,30 @@
+# Rebuilds the site on a schedule so the Nevobo match feed stays current.
+#
+# The site is static, so fixtures are baked in at build time. This triggers a
+# Netlify rebuild once a day (and on demand) to refresh them.
+#
+# One-time setup (see README):
+#   1. Netlify → Site configuration → Build & deploy → Build hooks → add a hook.
+#   2. Copy its URL into a GitHub repo secret named NETLIFY_BUILD_HOOK
+#      (Settings → Secrets and variables → Actions).
+name: Refresh match schedule
+
+on:
+  schedule:
+    # 04:00 UTC daily (~06:00 Amsterdam). Adjust or add times as you like,
+    # e.g. "0 4,16 * * *" for twice a day.
+    - cron: "0 4 * * *"
+  workflow_dispatch: {} # allow manual runs from the Actions tab
+
+jobs:
+  trigger-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify build hook
+        run: |
+          if [ -z "${{ secrets.NETLIFY_BUILD_HOOK }}" ]; then
+            echo "NETLIFY_BUILD_HOOK secret is not set — skipping."
+            exit 1
+          fi
+          curl -fsSL -X POST -d '{}' "${{ secrets.NETLIFY_BUILD_HOOK }}"
+          echo "Netlify build triggered."
