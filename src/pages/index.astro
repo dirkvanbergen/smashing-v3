@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
 import { getCollection, render } from 'astro:content';
 import home from '../data/home.json';
 import { getNextHomeMatchDay } from '../lib/matches.ts';
@@ -61,39 +62,30 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
 
 <BaseLayout title="Home">
   <!-- Hero -->
-  <section class="hero">
-    <div class:list={['container', 'hero__inner', { 'hero--with-image': home.hero.image }]}>
-      <div class="hero__content">
-        <p class="eyebrow">{home.hero.eyebrow}</p>
-        <h1>{home.hero.title}</h1>
-        <p>{home.hero.text}</p>
-        <div class="hero__actions">
-          {
-            home.hero.primaryLabel && (
-              <a class="btn btn--light" href={home.hero.primaryHref}>
-                {home.hero.primaryLabel}
-              </a>
-            )
-          }
-          {
-            home.hero.secondaryLabel && (
-              <a class="btn btn--ghost" href={home.hero.secondaryHref}>
-                {home.hero.secondaryLabel}
-              </a>
-            )
-          }
-        </div>
-      </div>
-
+  <Hero
+    eyebrow={home.hero.eyebrow}
+    title={home.hero.title}
+    text={home.hero.text}
+    image={home.hero.image}
+    imageAlt={home.hero.imageAlt}
+  >
+    <Fragment slot="actions">
       {
-        home.hero.image && (
-          <div class="hero__media">
-            <img src={home.hero.image} alt={home.hero.imageAlt ?? ''} width="640" height="480" />
-          </div>
+        home.hero.primaryLabel && (
+          <a class="btn btn--light" href={home.hero.primaryHref}>
+            {home.hero.primaryLabel}
+          </a>
         )
       }
-    </div>
-  </section>
+      {
+        home.hero.secondaryLabel && (
+          <a class="btn btn--ghost" href={home.hero.secondaryHref}>
+            {home.hero.secondaryLabel}
+          </a>
+        )
+      }
+    </Fragment>
+  </Hero>
 
   <!-- Announcements (temporary; auto-hide after their date) -->
   {
@@ -150,7 +142,7 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
         <div class="news-main">
           {
             featuredNews && (
-              <article class="card card--featured">
+              <article class="card card--featured card--link">
                 {featuredNews.data.cover && (
                   <img
                     class="card__media card__media--lg"
@@ -165,10 +157,12 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
                     {postDateFmt.format(featuredNews.data.date)}
                   </p>
                   <h3 class="card__title-lg">
-                    <a href={`/news/${featuredNews.id}`}>{featuredNews.data.title}</a>
+                    <a class="stretched-link" href={`/news/${featuredNews.id}`}>
+                      {featuredNews.data.title}
+                    </a>
                   </h3>
                   <p class="muted">{featuredNews.data.excerpt}</p>
-                  <a class="read-more" href={`/news/${featuredNews.id}`}>Read more &rarr;</a>
+                  <span class="read-more" aria-hidden="true">Read more &rarr;</span>
                 </div>
               </article>
             )
@@ -178,14 +172,14 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
             moreNews.length > 0 && (
               <div class="grid grid--2 news-more">
                 {moreNews.map((post) => (
-                  <article class="card">
+                  <article class="card card--link">
                     {post.data.cover && (
                       <img class="card__media" src={post.data.cover} alt="" loading="lazy" />
                     )}
                     <div class="card__body">
                       <p class="card__meta">{postDateFmt.format(post.data.date)}</p>
                       <h3>
-                        <a href={`/news/${post.id}`}>{post.data.title}</a>
+                        <a class="stretched-link" href={`/news/${post.id}`}>{post.data.title}</a>
                       </h3>
                       <p class="muted">{post.data.excerpt}</p>
                     </div>
@@ -280,7 +274,7 @@ const postDateFmt = new Intl.DateTimeFormat('en-GB', {
                 <div class="slot__list">
                   {slot.matches.map((m) => (
                     <div class="slot__match">
-                      <strong>{m.homeTeam}</strong> vs {m.awayTeam}
+                      <strong>{m.home}</strong> vs {m.away}
                     </div>
                   ))}
                 </div>

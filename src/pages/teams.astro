@@ -1,7 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import pages from '../data/pages.json';
 import { getCollection, render } from 'astro:content';
 
+const hero = pages.teams;
 const teams = (await getCollection('teams')).sort((a, b) => a.data.order - b.data.order);
 
 // Pre-render each team's markdown description.
@@ -14,31 +17,32 @@ const teamsWithBody = await Promise.all(
 ---
 
 <BaseLayout title="Teams">
-  <section class="hero">
-    <div class="container">
-      <p class="eyebrow">Our teams</p>
-      <h1>Find your team</h1>
-      <p>From competitive leagues to youth development — there's a spot for everyone.</p>
-    </div>
-  </section>
+  <Hero
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    text={hero.text}
+    image={hero.image}
+    imageAlt={hero.imageAlt}
+  />
 
   <section class="section">
     <div class="container">
       <div class="grid grid--3">
         {
           teamsWithBody.map(({ team, Content }) => (
-            <article class="card">
+            <article class="card card--team card--link">
               {team.data.photo && (
                 <img class="card__media" src={team.data.photo} alt="" loading="lazy" />
               )}
               <div class="card__body">
-                <h3>{team.data.title}</h3>
+                <h3><a class="stretched-link" href={`/teams/${team.id}`}>{team.data.title}</a></h3>
                 <p class="card__meta">{team.data.level}</p>
                 <div class="muted"><Content /></div>
                 <p class="muted" style="margin-top: 0.75rem; margin-bottom: 0;">
                   {team.data.coach && (<><strong>Coach:</strong> {team.data.coach}<br /></>)}
                   {team.data.practice && (<><strong>Practice:</strong> {team.data.practice}</>)}
                 </p>
+                <span class="read-more" aria-hidden="true">View team &rarr;</span>
               </div>
             </article>
           ))

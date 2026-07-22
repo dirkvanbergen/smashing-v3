@@ -73,6 +73,42 @@ collections:
             widget: "object"
             fields:
               - { label: "Heading", name: "heading", widget: "string" }
+      # Hero (top banner) text + optional image for the other pages.
+      - name: "pages"
+        label: "Page headers"
+        file: "src/data/pages.json"
+        description: "Hero text and optional image for About, Teams, News, Join and Contact."
+        fields:
+          - label: "About page"
+            name: "about"
+            widget: "object"
+            collapsed: true
+            fields: &pageHeroFields
+              - { label: "Eyebrow (small text above the title)", name: "eyebrow", widget: "string", required: false }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Intro text", name: "text", widget: "text", required: false }
+              - { label: "Image (optional, shown on the right)", name: "image", widget: "image", required: false }
+              - { label: "Image alt text", name: "imageAlt", widget: "string", required: false }
+          - label: "Teams page"
+            name: "teams"
+            widget: "object"
+            collapsed: true
+            fields: *pageHeroFields
+          - label: "News page"
+            name: "news"
+            widget: "object"
+            collapsed: true
+            fields: *pageHeroFields
+          - label: "Join page"
+            name: "join"
+            widget: "object"
+            collapsed: true
+            fields: *pageHeroFields
+          - label: "Contact page"
+            name: "contact"
+            widget: "object"
+            collapsed: true
+            fields: *pageHeroFields
 
   # --- Sponsors --------------------------------------------------------------
   # Shown in the home-page news sidebar. Add each sponsor with a logo + link.
@@ -142,6 +178,27 @@ collections:
       - { label: "Coach", name: "coach", widget: "string", required: false }
       - { label: "Practice times", name: "practice", widget: "string", required: false }
       - { label: "Team photo", name: "photo", widget: "image", required: false }
+      - { label: "Instagram URL", name: "instagram", widget: "string", required: false, hint: "Full link to the team's Instagram profile." }
+      - label: "Nevobo schedule feed URL"
+        name: "scheduleUrl"
+        widget: "string"
+        required: false
+        hint: "Per-team programma.rss, e.g. https://api.nevobo.nl/export/team/CKL7J75/heren/1/programma.rss"
+      - label: "Nevobo results feed URL"
+        name: "resultsUrl"
+        widget: "string"
+        required: false
+        hint: "Per-team resultaten.rss (not shown yet — reserved for when results appear)."
+      - label: "Players"
+        name: "players"
+        widget: "list"
+        required: false
+        label_singular: "Player"
+        summary: "{{fields.number}} {{fields.name}}"
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Role / position", name: "role", widget: "string", required: false }
+          - { label: "Shirt number", name: "number", widget: "number", value_type: "int", required: false }
       - { label: "Description", name: "body", widget: "markdown", required: false }
 
   # NOTE: The match schedule is NOT edited here — fixtures come from the Nevobo

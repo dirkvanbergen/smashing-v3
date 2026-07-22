@@ -1,21 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import pages from '../data/pages.json';
 
 // The "join" form uses Netlify Forms (see /contact for notes). It is a plain
 // static HTML form so Netlify can detect it at build time — no JS framework.
+const hero = pages.join;
 ---
 
 <BaseLayout
   title="Join"
   description="Join Smashing '72 — free trial training, membership info, and a sign-up form."
 >
-  <section class="hero">
-    <div class="container">
-      <p class="eyebrow">Get on court</p>
-      <h1>Join Smashing '72</h1>
-      <p>New members are always welcome — come along for a free trial session before you decide.</p>
-    </div>
-  </section>
+  <Hero
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    text={hero.text}
+    image={hero.image}
+    imageAlt={hero.imageAlt}
+  />
 
   <section class="section">
     <div class="container join-grid">

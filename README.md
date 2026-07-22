@@ -61,10 +61,18 @@ Astro pages read.
 3. Pick what you want to edit and click **New** (or an existing entry):
    - **Site settings → Home page** — the hero photo, headings and intro text.
    - **Announcements** — temporary home-page notices (e.g. a party).
-   - **News**, **Teams** — the main content.
+   - **News**, **Teams**, **Sponsors** — the main content.
 
    > The **match schedule is not in the CMS** — fixtures come automatically from
    > the Nevobo feed (see below).
+
+   Each **team** has its own page (`/teams/<name>`) with a description, photo,
+   players list, Instagram link, and an auto-updating **upcoming schedule**. To
+   wire the schedule, paste the team's Nevobo *programma* feed URL into the
+   **Nevobo schedule feed URL** field, e.g.
+   `https://api.nevobo.nl/export/team/CKL7J75/heren/1/programma.rss`
+   (`heren`/`dames`/`meisjes`/`jongens` + team number). Results and division
+   standings are not shown yet.
 4. Fill in the fields, upload images where offered, and click **Publish**.
 5. Your change is committed to the site's Git repo and the site rebuilds
    automatically — it's live in a minute or two.

@@ -240,6 +240,114 @@ a.sponsor:hover {
   }
 }
 
+/* --- Team detail page ---------------------------------------------------- */
+.back-link--hero {
+  color: rgba(255, 255, 255, 0.9);
+}
+.team-meta {
+  display: flex;
+  gap: 0.75rem 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+.team-meta span {
+  font-weight: 600;
+}
+.team-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+  align-items: start;
+}
+.team-main {
+  min-width: 0;
+}
+.team-photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top; /* crop from the bottom, keep heads at the top */
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+}
+.team-players {
+  margin-top: 2rem;
+}
+.player-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.player {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+.player__num {
+  font-weight: 800;
+  color: var(--red);
+  min-width: 1.6rem;
+  text-align: center;
+}
+.player__name {
+  font-weight: 600;
+}
+.player__role {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Team schedule (sidebar) */
+.tmatch {
+  padding: 0.65rem 0;
+  border-top: 1px solid var(--border);
+}
+.tmatch:first-child {
+  border-top: 0;
+}
+.tmatch__date {
+  font-weight: 700;
+  color: var(--red);
+  font-size: 0.85rem;
+  margin-bottom: 0.15rem;
+}
+.tmatch__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--bg-alt);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.badge--home {
+  background: #fdecef;
+  color: var(--red-dark);
+}
+
+@media (max-width: 900px) {
+  .team-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
 .card {
   background: var(--bg);
   border: 1px solid var(--border);
@@ -254,6 +362,37 @@ a.sponsor:hover {
   aspect-ratio: 16 / 9;
   object-fit: cover;
   width: 100%;
+}
+
+/* Team card photos: crop from the bottom so heads stay in view. */
+.card--team .card__media {
+  object-position: top;
+}
+
+/* Whole-card link (stretched-link pattern). */
+.card--link {
+  position: relative;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.card--link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(20, 22, 29, 0.1), 0 14px 34px rgba(20, 22, 29, 0.1);
+}
+.card--link:hover .read-more {
+  text-decoration: underline;
+}
+.stretched-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.stretched-link:focus-visible {
+  outline: none;
+}
+.card--link:focus-within {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
 }
 
 .card__body {

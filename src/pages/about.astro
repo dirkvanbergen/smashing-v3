@@ -1,15 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import pages from '../data/pages.json';
+
+const hero = pages.about;
 ---
 
 <BaseLayout title="About">
-  <section class="hero">
-    <div class="container">
-      <p class="eyebrow">About the club</p>
-      <h1>Who we are</h1>
-      <p>A volunteer-run club built on community, fair play and a love of the game.</p>
-    </div>
-  </section>
+  <Hero
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    text={hero.text}
+    image={hero.image}
+    imageAlt={hero.imageAlt}
+  />
 
   <section class="section">
     <div class="container stack" style="max-width: 68ch;">

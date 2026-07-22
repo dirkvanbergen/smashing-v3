@@ -1,7 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import pages from '../../data/pages.json';
 import { getCollection } from 'astro:content';
 
+const hero = pages.news;
 const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
@@ -14,13 +17,13 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
 ---
 
 <BaseLayout title="News">
-  <section class="hero">
-    <div class="container">
-      <p class="eyebrow">News &amp; updates</p>
-      <h1>Club news</h1>
-      <p>Match reports, announcements and everything happening at Smashing '72.</p>
-    </div>
-  </section>
+  <Hero
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    text={hero.text}
+    image={hero.image}
+    imageAlt={hero.imageAlt}
+  />
 
   <section class="section">
     <div class="container">
@@ -28,14 +31,14 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
         posts.length > 0 ? (
           <div class="grid grid--3">
             {posts.map((post) => (
-              <article class="card">
+              <article class="card card--link">
                 {post.data.cover && (
                   <img class="card__media" src={post.data.cover} alt="" loading="lazy" />
                 )}
                 <div class="card__body">
                   <p class="card__meta">{dateFmt.format(post.data.date)}</p>
                   <h3>
-                    <a href={`/news/${post.id}`}>{post.data.title}</a>
+                    <a class="stretched-link" href={`/news/${post.id}`}>{post.data.title}</a>
                   </h3>
                   <p class="muted">{post.data.excerpt}</p>
                 </div>

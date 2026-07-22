@@ -29,7 +29,21 @@ const teams = defineCollection({
     level: z.string(),
     coach: z.string().optional(),
     practice: z.string().optional(),
-    photo: z.string().optional(), // "/uploads/…"
+    photo: z.string().optional(), // "/uploads/…" or full URL
+    instagram: z.string().optional(), // Instagram profile URL
+    // Nevobo per-team RSS feeds (set in the CMS). Example:
+    // https://api.nevobo.nl/export/team/CKL7J75/heren/1/programma.rss
+    scheduleUrl: z.string().optional(),
+    resultsUrl: z.string().optional(), // reserved for later (results feed)
+    players: z
+      .array(
+        z.object({
+          name: z.string(),
+          role: z.string().optional(),
+          number: z.number().optional(),
+        })
+      )
+      .default([]),
   }),
 });
 

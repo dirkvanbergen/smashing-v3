@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { getTeamUpcoming } from '../../lib/matches.ts';
+
+export async function getStaticPaths() {
+  const teams = await getCollection('teams');
+  return teams.map((team) => ({ params: { slug: team.id }, props: { team } }));
+}
+
+const { team } = Astro.props;
+const { Content } = await render(team);
+const players = team.data.players ?? [];
+
+// Upcoming schedule from the team's Nevobo feed (if a URL is set in the CMS).
+const schedule = await getTeamUpcoming(team.data.scheduleUrl, 6);
+
+const dateFmt = new Intl.DateTimeFormat('en-GB', {
+  weekday: 'short',
+  day: 'numeric',
+  month: 'short',
+  timeZone: 'Europe/Amsterdam',
+});
+const timeFmt = new Intl.DateTimeFormat('en-GB', {
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+  timeZone: 'Europe/Amsterdam',
+});
+---
+
+<BaseLayout title={team.data.title} description={`${team.data.title} — ${team.data.level}`}>
+  <section class="hero">
+    <div class="container">
+      <a class="back-link back-link--hero" href="/teams">&larr; All teams</a>
+      <p class="eyebrow">{team.data.level}</p>
+      <h1>{team.data.title}</h1>
+      <div class="team-meta">
+        {team.data.coach && <span>Coach: {team.data.coach}</span>}
+        {team.data.practice && <span>Practice: {team.data.practice}</span>}
+        {
+          team.data.instagram && (
+            <a
+              class="btn btn--light"
+              href={team.data.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container team-layout">
+      <div class="team-main">
+        {team.data.photo && <img class="team-photo" src={team.data.photo} alt={team.data.title} />}
+
+        <div class="prose">
+          <Content />
+        </div>
+
+        {
+          players.length > 0 && (
+            <div class="team-players">
+              <h2>Players</h2>
+              <ul class="player-list">
+                {players.map((p) => (
+                  <li class="player">
+                    {p.number != null && <span class="player__num">{p.number}</span>}
+                    <span class="player__name">{p.name}</span>
+                    {p.role && <span class="player__role">{p.role}</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+
+      <aside class="team-side">
+        <div class="side-card">
+          <h3 class="side-card__title">Upcoming schedule</h3>
+          {
+            schedule.length > 0 ? (
+              <div class="tmatch-list">
+                {schedule.map((m) => (
+                  <div class="tmatch">
+                    <div class="tmatch__date">
+                      {dateFmt.format(m.date)} · {timeFmt.format(m.date)}
+                    </div>
+                    <div class="tmatch__row">
+                      <span class="tmatch__opp">
+                        {m.isHome ? 'vs ' : '@ '}
+                        {m.opponent}
+                      </span>
+                      <span class={`badge ${m.isHome ? 'badge--home' : ''}`}>
+                        {m.isHome ? 'Home' : 'Away'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p class="muted">No upcoming matches listed.</p>
+            )
+          }
+          <p class="muted match__source">
+            Schedule via <a href="https://www.nevobo.nl/">Nevobo</a>.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

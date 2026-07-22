@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import pages from '../data/pages.json';
 
 // This form is wired for Netlify Forms:
 //  - data-netlify="true"           → Netlify detects & captures submissions
@@ -8,16 +10,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 //    visually-hidden bot-field
 //  - action="/thanks/"             → redirect after a successful submit
 // It is a plain HTML form (no JS framework) so it works without a backend.
+const hero = pages.contact;
 ---
 
 <BaseLayout title="Contact">
-  <section class="hero">
-    <div class="container">
-      <p class="eyebrow">Get in touch</p>
-      <h1>Contact us</h1>
-      <p>Questions about joining, training or the club? Send us a message.</p>
-    </div>
-  </section>
+  <Hero
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    text={hero.text}
+    image={hero.image}
+    imageAlt={hero.imageAlt}
+  />
 
   <section class="section">
     <div class="container contact-grid">
