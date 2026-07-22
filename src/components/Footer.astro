@@ -1,4 +1,6 @@
 ---
+import documents from '../data/documents.json';
+
 const year = new Date().getFullYear();
 ---
 
@@ -33,6 +35,24 @@ const year = new Date().getFullYear();
         <li><a href="mailto:info@smashing72.example">info@smashing72.example</a></li>
       </ul>
     </div>
+
+    {
+      documents.items.length > 0 && (
+        <div>
+          <h3>{documents.heading}</h3>
+          <ul>
+            {documents.items.map((doc) => (
+              <li>
+                <a href={doc.url} target="_blank" rel="noopener noreferrer">
+                  {doc.label}
+                  <span class="doc-pdf">PDF</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
   </div>
 
   <div class="footer-bar">
@@ -52,8 +72,20 @@ const year = new Date().getFullYear();
   .footer-grid {
     display: grid;
     gap: 2rem;
-    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
     padding-block: 2.75rem;
+  }
+
+  .doc-pdf {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 4px;
+    padding: 0.05rem 0.3rem;
+    margin-left: 0.4rem;
+    vertical-align: 1px;
+    color: rgba(255, 255, 255, 0.75);
   }
 
   .footer-brand {
@@ -106,7 +138,12 @@ const year = new Date().getFullYear();
     color: rgba(255, 255, 255, 0.6);
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 900px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
     .footer-grid {
       grid-template-columns: 1fr;
       gap: 1.5rem;

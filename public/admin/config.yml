@@ -109,6 +109,21 @@ collections:
             widget: "object"
             collapsed: true
             fields: *pageHeroFields
+      # Legal / club documents shown in the footer.
+      - name: "documents"
+        label: "Club documents"
+        file: "src/data/documents.json"
+        description: "Links to club documents (e.g. Huishoudelijk Reglement, Statuten) shown in the footer."
+        fields:
+          - { label: "Heading", name: "heading", widget: "string" }
+          - label: "Documents"
+            name: "items"
+            widget: "list"
+            label_singular: "Document"
+            summary: "{{fields.label}}"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "URL (paste a link, or upload a PDF)", name: "url", widget: "string", hint: "Full link to the PDF." }
 
   # --- Sponsors --------------------------------------------------------------
   # Shown in the home-page news sidebar. Add each sponsor with a logo + link.
