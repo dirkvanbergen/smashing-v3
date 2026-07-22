@@ -1,6 +1,7 @@
 ---
 title: Smashing U14
-order: 5
+category: Jeugd
+order: 2
 level: Youth — Under 14
 coach: E. Coach
 practice: Fri, 17:00

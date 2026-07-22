@@ -173,7 +173,8 @@ collections:
     sortable_fields: ["order", "title"]
     fields:
       - { label: "Team name", name: "title", widget: "string" }
-      - { label: "Sort order", name: "order", widget: "number", value_type: "int", default: 99 }
+      - { label: "Category", name: "category", widget: "select", options: ["Heren", "Dames", "Jeugd", "Recreanten"], default: "Heren" }
+      - { label: "Sort order (within category)", name: "order", widget: "number", value_type: "int", default: 99 }
       - { label: "Level / league", name: "level", widget: "string" }
       - { label: "Coach", name: "coach", widget: "string", required: false }
       - { label: "Practice times", name: "practice", widget: "string", required: false }

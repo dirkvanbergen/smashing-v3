@@ -1,5 +1,6 @@
 ---
 title: Smashing 1
+category: Heren
 order: 1
 level: Men's — Division 2
 coach: A. Coach

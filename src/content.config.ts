@@ -25,6 +25,7 @@ const teams = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/teams' }),
   schema: z.object({
     title: z.string(), // team name
+    category: z.enum(['Heren', 'Dames', 'Jeugd', 'Recreanten']).default('Heren'),
     order: z.number().default(99),
     level: z.string(),
     coach: z.string().optional(),

@@ -14,6 +14,13 @@ const teamsWithBody = await Promise.all(
     return { team, Content };
   })
 );
+
+// Group into the club's categories (only those that have teams are shown).
+const CATEGORIES = ['Heren', 'Dames', 'Jeugd', 'Recreanten'] as const;
+const groups = CATEGORIES.map((category) => ({
+  category,
+  items: teamsWithBody.filter(({ team }) => team.data.category === category),
+})).filter((group) => group.items.length > 0);
 ---
 
 <BaseLayout title="Teams">
@@ -27,27 +34,86 @@ const teamsWithBody = await Promise.all(
 
   <section class="section">
     <div class="container">
-      <div class="grid grid--3">
-        {
-          teamsWithBody.map(({ team, Content }) => (
-            <article class="card card--team card--link">
-              {team.data.photo && (
-                <img class="card__media" src={team.data.photo} alt="" loading="lazy" />
-              )}
-              <div class="card__body">
-                <h3><a class="stretched-link" href={`/teams/${team.id}`}>{team.data.title}</a></h3>
-                <p class="card__meta">{team.data.level}</p>
-                <div class="muted"><Content /></div>
-                <p class="muted" style="margin-top: 0.75rem; margin-bottom: 0;">
-                  {team.data.coach && (<><strong>Coach:</strong> {team.data.coach}<br /></>)}
-                  {team.data.practice && (<><strong>Practice:</strong> {team.data.practice}</>)}
-                </p>
-                <span class="read-more" aria-hidden="true">View team &rarr;</span>
+      {
+        groups.length > 1 && (
+          <nav class="team-jump" aria-label="Jump to category">
+            {groups.map((group) => (
+              <a class="chip" href={`#${group.category.toLowerCase()}`}>
+                {group.category}
+              </a>
+            ))}
+          </nav>
+        )
+      }
+
+      {
+        groups.map((group) => (
+          <div class="team-group" id={group.category.toLowerCase()}>
+            <h2 class="team-group__title">{group.category}</h2>
+
+            {group.category === 'Recreanten' ? (
+              <div class="stack">
+                {group.items.map(({ team, Content }) => (
+                  <div class="rec-card">
+                    <div class="rec-card__main">
+                      <h3>{team.data.title}</h3>
+                      {team.data.level && <p class="card__meta">{team.data.level}</p>}
+                      <div class="muted">
+                        <Content />
+                      </div>
+                    </div>
+                    <div class="rec-card__aside">
+                      {team.data.practice && (
+                        <p class="rec-when">
+                          <strong>When</strong>
+                          <br />
+                          {team.data.practice}
+                        </p>
+                      )}
+                      <a class="btn btn--primary" href="/join">Come play</a>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </article>
-          ))
-        }
-      </div>
+            ) : (
+              <div class="grid grid--3">
+                {group.items.map(({ team, Content }) => (
+                  <article class="card card--team card--link">
+                    {team.data.photo && (
+                      <img class="card__media" src={team.data.photo} alt="" loading="lazy" />
+                    )}
+                    <div class="card__body">
+                      <h3>
+                        <a class="stretched-link" href={`/teams/${team.id}`}>
+                          {team.data.title}
+                        </a>
+                      </h3>
+                      <p class="card__meta">{team.data.level}</p>
+                      <div class="muted">
+                        <Content />
+                      </div>
+                      <p class="muted" style="margin-top: 0.75rem; margin-bottom: 0;">
+                        {team.data.coach && (
+                          <>
+                            <strong>Coach:</strong> {team.data.coach}
+                            <br />
+                          </>
+                        )}
+                        {team.data.practice && (
+                          <>
+                            <strong>Practice:</strong> {team.data.practice}
+                          </>
+                        )}
+                      </p>
+                      <span class="read-more" aria-hidden="true">View team &rarr;</span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+        ))
+      }
     </div>
   </section>
 </BaseLayout>

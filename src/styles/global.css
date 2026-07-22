@@ -240,6 +240,68 @@ a.sponsor:hover {
   }
 }
 
+/* --- Teams listing (grouped by category) --------------------------------- */
+.team-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.25rem;
+}
+.chip {
+  display: inline-block;
+  padding: 0.45rem 1.1rem;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--heading);
+}
+.chip:hover {
+  border-color: var(--red);
+  color: var(--red);
+  text-decoration: none;
+}
+
+.team-group {
+  scroll-margin-top: 84px; /* clear the sticky header when jumping */
+}
+.team-group + .team-group {
+  margin-top: 2.75rem;
+}
+.team-group__title {
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--red);
+  display: inline-block;
+}
+
+/* Recreational info card (a training slot, not per-team) */
+.rec-card {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--red);
+  border-radius: var(--radius);
+}
+.rec-card__main h3 {
+  margin-top: 0;
+}
+.rec-card__aside {
+  display: grid;
+  gap: 0.75rem;
+}
+.rec-when {
+  margin: 0;
+}
+@media (max-width: 640px) {
+  .rec-card {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* --- Team detail page ---------------------------------------------------- */
 .back-link--hero {
   color: rgba(255, 255, 255, 0.9);

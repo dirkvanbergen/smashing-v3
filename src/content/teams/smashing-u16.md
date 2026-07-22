@@ -1,6 +1,7 @@
 ---
 title: Smashing U16
-order: 4
+category: Jeugd
+order: 1
 level: Youth — Under 16
 coach: D. Coach
 practice: Fri, 18:00

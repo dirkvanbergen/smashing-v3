@@ -1,6 +1,7 @@
 ---
 title: Smashing Ladies
-order: 2
+category: Dames
+order: 1
 level: Women's — Division 3
 coach: C. Coach
 practice: Mon & Thu, 20:00
