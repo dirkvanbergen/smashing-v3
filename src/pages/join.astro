@@ -1,11 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import pages from '../data/pages.json';
+import { getEntry, render } from 'astro:content';
 
 // The "join" form uses Netlify Forms (see /contact for notes). It is a plain
 // static HTML form so Netlify can detect it at build time — no JS framework.
-const hero = pages.join;
+const entry = await getEntry('pages', 'join');
+const hero = entry!.data;
+const { Content } = await render(entry!);
 ---
 
 <BaseLayout
@@ -22,29 +24,8 @@ const hero = pages.join;
 
   <section class="section">
     <div class="container join-grid">
-      <div class="stack">
-        <div>
-          <h2>How it works</h2>
-          <ol class="steps">
-            <li><strong>Get in touch</strong> using the form — tell us a bit about you.</li>
-            <li><strong>Come to a free trial</strong> training session with the right team.</li>
-            <li><strong>Sign up</strong> as a member if it's a good fit. That's it!</li>
-          </ol>
-        </div>
-
-        <div>
-          <h2>Membership</h2>
-          <p class="muted">
-            We're a non-profit club, so fees just cover hall hire, coaching and league
-            costs. Youth memberships are discounted, and no one is turned away for
-            money reasons — just ask.
-          </p>
-          <ul class="muted">
-            <li>Adults — from &euro;15 / month</li>
-            <li>Youth (U16 &amp; U14) — from &euro;8 / month</li>
-            <li>First trial session always free</li>
-          </ul>
-        </div>
+      <div class="prose">
+        <Content />
       </div>
 
       <div class="card">

@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import pages from '../data/pages.json';
+import { getEntry, render } from 'astro:content';
 
-const hero = pages.about;
+const entry = await getEntry('pages', 'about');
+const hero = entry!.data;
+const { Content } = await render(entry!);
 ---
 
 <BaseLayout title="About">
@@ -16,32 +18,10 @@ const hero = pages.about;
   />
 
   <section class="section">
-    <div class="container stack" style="max-width: 68ch;">
-      <p>
-        Smashing VC is a small non-profit volleyball club. We welcome players of
-        every age and ability — from first-timers picking up a ball for the first
-        time to seasoned competitors chasing promotion.
-      </p>
-
-      <h2>Our mission</h2>
-      <p>
-        To make volleyball accessible, affordable and fun for our whole community,
-        while fielding competitive teams that make the club proud.
-      </p>
-
-      <h2>What we offer</h2>
-      <ul>
-        <li>Recreational and competitive teams for adults</li>
-        <li>Youth development groups (U14 &amp; U16)</li>
-        <li>Weekly training sessions with qualified coaches</li>
-        <li>A friendly, social club atmosphere off the court</li>
-      </ul>
-
-      <h2>Get involved</h2>
-      <p>
-        Whether you want to play, coach, or volunteer, there's a place for you.
-        <a href="/contact">Reach out</a> and we'll help you find it.
-      </p>
+    <div class="container">
+      <div class="prose">
+        <Content />
+      </div>
     </div>
   </section>
 </BaseLayout>

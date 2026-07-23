@@ -73,42 +73,6 @@ collections:
             widget: "object"
             fields:
               - { label: "Heading", name: "heading", widget: "string" }
-      # Hero (top banner) text + optional image for the other pages.
-      - name: "pages"
-        label: "Page headers"
-        file: "src/data/pages.json"
-        description: "Hero text and optional image for About, Teams, News, Join and Contact."
-        fields:
-          - label: "About page"
-            name: "about"
-            widget: "object"
-            collapsed: true
-            fields: &pageHeroFields
-              - { label: "Eyebrow (small text above the title)", name: "eyebrow", widget: "string", required: false }
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Intro text", name: "text", widget: "text", required: false }
-              - { label: "Image (optional, shown on the right)", name: "image", widget: "image", required: false }
-              - { label: "Image alt text", name: "imageAlt", widget: "string", required: false }
-          - label: "Teams page"
-            name: "teams"
-            widget: "object"
-            collapsed: true
-            fields: *pageHeroFields
-          - label: "News page"
-            name: "news"
-            widget: "object"
-            collapsed: true
-            fields: *pageHeroFields
-          - label: "Join page"
-            name: "join"
-            widget: "object"
-            collapsed: true
-            fields: *pageHeroFields
-          - label: "Contact page"
-            name: "contact"
-            widget: "object"
-            collapsed: true
-            fields: *pageHeroFields
       # Legal / club documents shown in the footer.
       - name: "documents"
         label: "Club documents"
@@ -124,6 +88,63 @@ collections:
             fields:
               - { label: "Label", name: "label", widget: "string" }
               - { label: "URL (paste a link, or upload a PDF)", name: "url", widget: "string", hint: "Full link to the PDF." }
+
+  # --- Pages -----------------------------------------------------------------
+  # One entry per static page: the hero (top banner) + the body text. The
+  # forms on Join/Contact are not edited here (they live in the templates).
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "about"
+        label: "About"
+        file: "src/content/pages/about.md"
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string", required: false }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Intro text", name: "text", widget: "text", required: false }
+          - { label: "Hero image", name: "image", widget: "image", required: false }
+          - { label: "Hero image alt text", name: "imageAlt", widget: "string", required: false }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - name: "teams"
+        label: "Teams"
+        file: "src/content/pages/teams.md"
+        description: "Team list is managed under Teams — this is just the page header."
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string", required: false }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Intro text", name: "text", widget: "text", required: false }
+          - { label: "Hero image", name: "image", widget: "image", required: false }
+          - { label: "Hero image alt text", name: "imageAlt", widget: "string", required: false }
+      - name: "news"
+        label: "News"
+        file: "src/content/pages/news.md"
+        description: "News posts are managed under News — this is just the page header."
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string", required: false }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Intro text", name: "text", widget: "text", required: false }
+          - { label: "Hero image", name: "image", widget: "image", required: false }
+          - { label: "Hero image alt text", name: "imageAlt", widget: "string", required: false }
+      - name: "join"
+        label: "Join"
+        file: "src/content/pages/join.md"
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string", required: false }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Intro text", name: "text", widget: "text", required: false }
+          - { label: "Hero image", name: "image", widget: "image", required: false }
+          - { label: "Hero image alt text", name: "imageAlt", widget: "string", required: false }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - name: "contact"
+        label: "Contact"
+        file: "src/content/pages/contact.md"
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string", required: false }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Intro text", name: "text", widget: "text", required: false }
+          - { label: "Hero image", name: "image", widget: "image", required: false }
+          - { label: "Hero image alt text", name: "imageAlt", widget: "string", required: false }
+          - { label: "Body", name: "body", widget: "markdown" }
 
   # --- Sponsors --------------------------------------------------------------
   # Shown in the home-page news sidebar. Add each sponsor with a logo + link.

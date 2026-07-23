@@ -75,4 +75,17 @@ const sponsors = defineCollection({
   }),
 });
 
-export const collections = { news, teams, announcements, sponsors };
+// One entry per static page (About, Teams, News, Join, Contact): the hero
+// (frontmatter) plus the body text (markdown). Forms stay in the templates.
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
+  schema: z.object({
+    eyebrow: z.string().optional(),
+    title: z.string(),
+    text: z.string().optional(),
+    image: z.string().optional(),
+    imageAlt: z.string().optional(),
+  }),
+});
+
+export const collections = { news, teams, announcements, sponsors, pages };

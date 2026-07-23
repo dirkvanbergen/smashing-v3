@@ -1,10 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import pages from '../data/pages.json';
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 
-const hero = pages.teams;
+const hero = (await getEntry('pages', 'teams'))!.data;
 const teams = (await getCollection('teams')).sort((a, b) => a.data.order - b.data.order);
 
 // Pre-render each team's markdown description.

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import pages from '../data/pages.json';
+import { getEntry, render } from 'astro:content';
 
 // This form is wired for Netlify Forms:
 //  - data-netlify="true"           → Netlify detects & captures submissions
@@ -10,7 +10,9 @@ import pages from '../data/pages.json';
 //    visually-hidden bot-field
 //  - action="/thanks/"             → redirect after a successful submit
 // It is a plain HTML form (no JS framework) so it works without a backend.
-const hero = pages.contact;
+const entry = await getEntry('pages', 'contact');
+const hero = entry!.data;
+const { Content } = await render(entry!);
 ---
 
 <BaseLayout title="Contact">
@@ -59,21 +61,8 @@ const hero = pages.contact;
         <button class="btn btn--primary" type="submit">Send message</button>
       </form>
 
-      <aside class="contact-info stack">
-        <h2>Other ways to reach us</h2>
-        <p class="muted">
-          <strong>Email</strong><br />
-          <a href="mailto:info@smashing72.example">info@smashing72.example</a>
-        </p>
-        <p class="muted">
-          <strong>Training venue</strong><br />
-          Sports Hall, Example Street 1<br />
-          1234 AB, Your Town
-        </p>
-        <p class="muted">
-          <strong>Want to play?</strong><br />
-          Head to the <a href="/join">join page</a> to book a free trial.
-        </p>
+      <aside class="contact-info">
+        <Content />
       </aside>
     </div>
   </section>
